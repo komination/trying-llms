@@ -1,6 +1,7 @@
 FROM public.ecr.aws/docker/library/python:3.13.3-bookworm
 
 ENV UV_TORCH_BACKEND=auto
+ENV TRANSFORMERS_VERBOSITY=info
 ARG USER
 ARG UID
 WORKDIR /app
@@ -11,11 +12,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gnupg \
     jq
-
-# Node.jsのインストール
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get update && \
-    apt-get install -y nodejs
 
 RUN groupadd -g ${UID} ${USER} && \
     useradd -m -u ${UID} -g ${UID} -s /bin/bash ${USER} && \
