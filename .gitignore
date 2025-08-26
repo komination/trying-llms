@@ -19,3 +19,5 @@ qwen25vl_3b_obj_center_qlora
 
 output-lora/
 gemma3-kansaiben-lora
+output-sft/
+gemma3-kansaiben-sft
