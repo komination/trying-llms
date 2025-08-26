@@ -17,4 +17,9 @@ RUN groupadd -g ${UID} ${USER} && \
     useradd -m -u ${UID} -g ${UID} -s /bin/bash ${USER} && \
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs && \
+    npm install -g @openai/codex
+
 USER ${USER}
