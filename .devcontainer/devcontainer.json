@@ -20,7 +20,8 @@
 				"PKief.material-icon-theme",
 				"saoudrizwan.claude-dev",
 				"github.vscode-github-actions",
-				"Anthropic.claude-code"
+				"Anthropic.claude-code",
+				"openai.chatgpt"
 			]
 		}
 	},
