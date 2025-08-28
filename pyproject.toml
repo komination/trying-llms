@@ -39,6 +39,7 @@ requires-dist = ["torch", "einops"]
 [dependency-groups]
 dev = [
     "ruff>=0.12.9",
+    "huggingface_hub[cli]>=0.25",
 ]
 
 [[tool.uv.index]]
