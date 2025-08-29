@@ -48,6 +48,7 @@ LOGGING_STEPS = 10
 EVAL_RATIO = 0.05
 EARLY_STOPPING_PATIENCE = 2
 
+
 def set_seed(seed: int = 42):
     random.seed(seed)
     torch.manual_seed(seed)
@@ -103,7 +104,9 @@ def build_messages(example: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def tokenize_supervised(examples: Dict[str, List[Any]], tokenizer: AutoTokenizer) -> Dict[str, Any]:
+def tokenize_supervised(
+    examples: Dict[str, List[Any]], tokenizer: AutoTokenizer
+) -> Dict[str, Any]:
     """assistant 部分のみ損失をかける (-100 マスク) 版のトークナイズ"""
     input_ids_list, labels_list = [], []
 
@@ -145,7 +148,9 @@ def tokenize_supervised(examples: Dict[str, List[Any]], tokenizer: AutoTokenizer
     return {"input_ids": input_ids_list, "labels": labels_list}
 
 
-def data_collator(features: List[Dict[str, Any]], tokenizer: AutoTokenizer) -> Dict[str, torch.Tensor]:
+def data_collator(
+    features: List[Dict[str, Any]], tokenizer: AutoTokenizer
+) -> Dict[str, torch.Tensor]:
     input_ids = [f["input_ids"] for f in features]
     labels = [f["labels"] for f in features]
     max_len = max(len(x) for x in input_ids)
@@ -184,6 +189,7 @@ def load_base_model_with_best_attn(model_name: str, dtype: torch.dtype):
         except Exception as e:
             tried.append((impl, str(e)[:200]))
     raise RuntimeError(f"all attn_implementation failed: {tried}")
+
 
 def main():
     warnings.filterwarnings("default")
@@ -236,8 +242,8 @@ def main():
 
     print(f"学習サンプル数: {len(train_ds):,}, 評価サンプル数: {len(eval_ds):,}")
 
-    use_bf16 = (dtype == torch.bfloat16)
-    use_fp16 = (dtype == torch.float16)
+    use_bf16 = dtype == torch.bfloat16
+    use_fp16 = dtype == torch.float16
 
     training_args = TrainingArguments(
         output_dir="./output-lora",
@@ -274,7 +280,9 @@ def main():
         eval_dataset=eval_ds,
         data_collator=lambda f: data_collator(f, tokenizer),
         tokenizer=tokenizer,
-        callbacks=[EarlyStoppingCallback(early_stopping_patience=EARLY_STOPPING_PATIENCE)],
+        callbacks=[
+            EarlyStoppingCallback(early_stopping_patience=EARLY_STOPPING_PATIENCE)
+        ],
     )
 
     assert_no_nan_in_trainable(model, when="before_train")
