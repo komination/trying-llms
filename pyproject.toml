@@ -12,6 +12,7 @@ dependencies = [
     "pillow>=11.3.0",
     "pycocotools>=2.0.10",
     "qwen-vl-utils>=0.0.8",
+    "sentencepiece>=0.2.1",
     "tensorboard>=2.20.0",
     "torch>=2.8.0",
     "torchvision>=0.23.0",
